@@ -17,14 +17,11 @@ class _AddQuestionState extends State<AddQuestion> {
 
   DatabaseService databaseService = new DatabaseService();
 
-  uploadQuestionData() async{
-
-
+  uploadQuestionData() async {
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
       });
-
 
       Map<String, String> questionMap = {
         "question": question,
@@ -34,9 +31,13 @@ class _AddQuestionState extends State<AddQuestion> {
         "option4": option4,
       };
 
-     await databaseService.addQuestionData(questionMap, widget.quizId).then((value) {setState(() {
-       _isLoading = false;
-     });});
+      await databaseService
+          .addQuestionData(questionMap, widget.quizId)
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
     }
   }
 
@@ -57,8 +58,8 @@ class _AddQuestionState extends State<AddQuestion> {
               ),
             )
           : Form(
-            key: _formKey,
-            child: Container(
+              key: _formKey,
+              child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   children: [
@@ -76,7 +77,8 @@ class _AddQuestionState extends State<AddQuestion> {
                       validator: (val) => val.isEmpty
                           ? "Enter Option1 ( Correct answer ) "
                           : null,
-                      decoration: InputDecoration(hintText: "Option1"),
+                      decoration: InputDecoration(
+                          hintText: "Option1 - the correct answer -"),
                       onChanged: (val) {
                         option1 = val;
                       },
@@ -115,7 +117,9 @@ class _AddQuestionState extends State<AddQuestion> {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
+                            uploadQuestionData();
+
                             Navigator.pop(context);
                           },
                           child: blueButton(
@@ -145,7 +149,7 @@ class _AddQuestionState extends State<AddQuestion> {
                   ],
                 ),
               ),
-          ),
+            ),
     );
   }
 }
